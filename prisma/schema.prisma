@@ -1,0 +1,43 @@
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+  binaryTargets   = ["native", "rhel-openssl-1.0.x"]
+}
+
+model Wallet {
+  id        String   @id
+  createdAt DateTime @default(now())
+  pins      Pin[]
+  ens       String?
+  avatar    String?
+  lastEns   DateTime @default(now())
+  lastAvatar DateTime @default(now())
+}
+
+model Pin {
+  id        String   @id @default(uuid())
+  index     Int
+  src       String?
+  value     String?
+  type      String
+  walletId  String
+  createdAt DateTime @default(now())
+  wallet    Wallet   @relation(fields: [walletId], references: [id])
+
+  @@unique([index, walletId])
+}
+
+ 
+model Login {
+  id        Int   @id  @default(autoincrement())
+  createdAt DateTime @default(now())
+  address   String?
+} 
+  

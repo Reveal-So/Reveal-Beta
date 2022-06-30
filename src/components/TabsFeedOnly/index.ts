@@ -1,0 +1,1 @@
+export { TabsFeedOnly } from "./TabsFeedOnly";

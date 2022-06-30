@@ -1,0 +1,1 @@
+export { TabsFeed } from "./TabsFeed";
